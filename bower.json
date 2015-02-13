@@ -1,0 +1,9 @@
+{
+  "name": "leave-management-application",
+  "version": "1.0.0",
+  "dependencies": {
+    "angular": "1.3.10",
+    "bootstrap": "3.2.0",
+    "angular-ui-router": "0.2.13"
+  }
+}

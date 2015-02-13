@@ -1,0 +1,6 @@
+node_modules
+*.log
+.bower-cache
+.bower-registry
+.bower-tmp
+public/bower_components

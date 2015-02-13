@@ -1,0 +1,50 @@
+{
+  "routes": {
+    "secured": {
+      "GET /users/me/actions": "UserController#getAllowedActions",
+      "PUT /users/me": "UserController#updateCurrentUserProfile",
+      "POST /revokeToken": "UserController#revokeAccessToken",
+      "POST /refreshToken": "UserController#refreshAccessToken",
+      "GET /users/:id": "UserController#getProfile",
+      "GET /users/:managerId/employees": "UserController#searchEmployees",
+      "GET /managers": "UserController#getAllManagers",
+      "GET /employees": "UserController#getAllEmployees",
+      "GET /users/:id/leaves": "LeaveController#searchLeaves",
+      "PUT /leaves/:id": "LeaveController#update",
+      "POST /users/:userId/leaves": "LeaveController#create",
+      "POST /leaves/:id/approve": "LeaveController#approve",
+      "POST /leaves/:id/reject": "LeaveController#reject",
+      "DELETE /leaves/:id": "LeaveController#delete"
+    },
+    "public": {
+      "POST /resetForgottenPassword": "UserController#resetForgottenPassword",
+      "POST /login": "UserController#login",
+      "POST /register": "UserController#registerUser",
+      "POST /forgotPassword": "UserController#recoverPassword"
+    }
+  },
+  "controllers": {
+    "UserController": {
+      "options": {
+      }
+    },
+    "LeaveController": {
+      "options": {
+      }
+    }
+  },
+  "app": {
+    "controllersDirectory": "./controllers"
+  },
+  "datasource": {
+    "dbUrl": "mysql://root:deflection@localhost:3306/novanet",
+    "modelsDirectory": "./models"
+  },
+  "SALT_WORK_FACTOR": 1,
+  "SESSION_TOKEN_DURATION": 50000000,
+  "JWT_SECRET": "pdlc_3YIOdhcOoUZ0s~G4wZTO+QY0Z6I",
+  "DEFAULT_TOKEN_SIZE": 16,
+  "ACTIONS_INDIVIDUAL_USER": "users,leaves,revokeToken,forgotPassword,refreshToken",
+  "ACTIONS_MANAGER": "users,leaves,revokeToken,forgotPassword,managers,employees,refreshToken",
+  "WEB_SERVER_PORT": 4040
+}
