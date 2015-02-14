@@ -4,7 +4,7 @@
  * Not Found error.
  * The Default HTTP STATUS CODE for NotFoundError is 404 (HTTP NOT FOUND)
  *
- * @author      spanhawk
+ * @author      riteshsangwan
  * @version     0.0.1
  */
 

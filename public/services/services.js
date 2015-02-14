@@ -157,14 +157,14 @@ appServices.factory('util', ['$log', 'SecurityService', 'UserService', 'storage'
           SecurityService.getAllowedActions().then(function(actions) {
             storage.storeAllowedActions(actions, true);
           }, function(actionReason) {
-            $log.error('Error fetching current user actions ' + actionReason);
+            $log.error('Error fetching current user actions. HTTP STATUS CODE [' + actionReason.status + '], Error message [' + angular.toJson(actionReason.data) + ']');
           });
         }, function(userReason) {
-          $log.error('Error fetching current user profile ' + userReason);
+          $log.error('Error fetching current user profile. HTTP STATUS CODE [' + userReason.status + '], Error message [' + angular.toJson(userReason.data) + ']');
         });
       }, function(reason) {
         // some error occurred
-        $log.error('Session Token Refresh Error ' + reason);
+        $log.error('Session Token Refresh Error. HTTP STATUS CODE [' + reason.status + '], Error message [' + angular.toJson(reason.data) + ']');
       });
     }
   };
@@ -418,5 +418,139 @@ appServices.factory('UserService', ['config', 'storage', '$http', '$q', function
     return deferred.promise;
   };
 
+  /**
+   * GET all managers in the organization
+   */
+  service.getAllManagers = function() {
+    var deferred = $q.defer();
+    // prepare request object
+    var req = {
+      method: 'GET',
+      url: '/managers'
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
+
+  /**
+   * GET all users ( except manager) in the organization
+   */
+  service.getAllUsers = function() {
+    var deferred = $q.defer();
+    // prepare request object
+    var req = {
+      method: 'GET',
+      url: '/employees'
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
+
+  service.applyLeave = function(entity, user) {
+    var deferred = $q.defer();
+    var accessToken = storage.getSessionToken();
+    // prepare http request object
+    var req = {
+      method: 'POST',
+      url: '/users/' + user.id + '/leaves',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      },
+      data: entity
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
+
+  service.getLeaves = function(user) {
+    var deferred = $q.defer();
+    var accessToken = storage.getSessionToken();
+    // prepare http request object
+    var req = {
+      method: 'GET',
+      url: '/users/' + user.id + '/leaves',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
+
+  return service;
+}]);
+
+/**
+ * Application LeaveService.
+ * This service communicates with backend REST API's
+ * All the routes in this service requires authorization header
+ * All the methods in this service returns a promise.
+ * When async opeartion finishes that promise would be resolved or rejected.
+ * The promise would be resolved with actual response from Backend API and would be rejected be the reason
+ */
+appServices.factory('LeaveService', ['config', 'storage', '$http', '$q', function(config, storage, $http, $q) {
+  var service = {};
+
+  service.approveLeave = function(leaveId, reason) {
+    var deferred = $q.defer();
+    var accessToken = storage.getSessionToken();
+    var data = {
+      reason: reason
+    };
+    // prepare http request object
+    var req = {
+      method: 'POST',
+      url: '/leaves/' + leaveId + '/approve',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      },
+      data: data
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
+
+  service.rejectLeave = function(leaveId, reason) {
+    var deferred = $q.defer();
+    var accessToken = storage.getSessionToken();
+    var data = {
+      reason: reason
+    };
+    // prepare http request object
+    var req = {
+      method: 'POST',
+      url: '/leaves/' + leaveId + '/reject',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      },
+      data: data
+    };
+    $http(req).then(function(payload) {
+      deferred.resolve(payload.data);
+    }, function(reason) {
+      deferred.reject(reason);
+    });
+    return deferred.promise;
+  };
   return service;
 }]);

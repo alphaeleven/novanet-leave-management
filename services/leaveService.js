@@ -69,12 +69,22 @@ exports.delete = function(id, callback) {
   ], callback);
 };
 
+/**
+ * Find all leaves by filter criteria
+ * @param  {Object}     criteria    filter criteria
+ * @param  {Function}   callback    callback function
+ */
 exports.findByFilterCriteria = function(criteria, callback) {
   Leave.findAll({where: criteria}).success(function(leaves) {
     callback(null, leaves);
   }).error(callback);
 };
 
+/**
+ * Create leave
+ * @param  {Object}     entity      entity to create
+ * @param  {Function}   callback    callback function
+ */
 exports.create = function(entity, callback) {
   Leave.create(entity).success(function(leave) {
     callback(null, leave);

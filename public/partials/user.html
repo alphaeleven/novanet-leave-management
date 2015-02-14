@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row vspacer40">
+        <div class="col col-md-12">
+            <button data-ng-click="logout()" class="btn btn-success pull-right">Logout</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-8 col-centered">
+            <h3 class="text-center">Welcome {{user.firstName}} {{user.lastName}}</h3>
+            <p class="text-center">Apply for leaves below. Kindly enter your reason for leave. Reason is mandatory</p>
+            <p class="text-center text-warning text-small">The maximum leave duration is 15 days (excluding weekends and national holidays)</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row">
+            <div class="col col-md-12">
+                <p class="text-center" data-ng-class="{'text-danger': status.error, 'text-success': status.success}" data-ng-if="status.error || status.success">{{status.message}}</p>
+            </div>
+        </div>
+        <div class="col col-md-8 col-centered">
+            <div class="row vspacer40">
+                <div class="col col-md-6">
+                    <p>Choose start date</p>
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" ng-model="startDate" is-open="startDateOpened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openStartDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+                <div class="col col-md-6">
+                    <p>Choose end date</p>
+                    <p class="input-group">
+                        <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" ng-model="endDate" is-open="endDateOpened" min-date="startDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="row vspacer40">
+                <div class="col col-md-12">
+                    <textarea class="form-control" data-ng-model="reason" placeholder="Reason"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <button class="pull-right btn btn-success" data-ng-disabled="!reason" data-ng-click="apply(reason)">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

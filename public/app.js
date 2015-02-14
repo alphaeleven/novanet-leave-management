@@ -3,7 +3,7 @@
 /**
  * This is the main file. This will bootstrapped the HQ angular app and will do the required configurations
  */
-var app = angular.module('leaveManagementApp', ['ui.router', 'leaveManagementApp.controllers', 'leaveManagementApp.services']);
+var app = angular.module('leaveManagementApp', ['ui.bootstrap', 'ui.router', 'leaveManagementApp.controllers', 'leaveManagementApp.services']);
 
 /**
  * App configurations goes here
@@ -20,16 +20,33 @@ app.config(['$stateProvider', '$urlRouterProvider','$locationProvider', '$compil
     })
     .state('manager', {
       url: '/manager',
+      resolve: {
+        profile: function(storage) {
+          var profile = storage.getCurrentUserProfile();
+          return profile;
+        }
+      },
       templateUrl: 'partials/manager.html',
       controller: 'ManagerController'
     })
     .state('user', {
       url: '/user',
+      resolve: {
+        profile: function(UserService, storage) {
+          var profile = storage.getCurrentUserProfile();
+          return profile;
+        }
+      },
       templateUrl: 'partials/user.html',
       controller: 'UserController'
     })
     .state('register', {
       url: '/register',
+      resolve: {
+        managers: function(UserService) {
+          return UserService.getAllManagers();
+        }
+      },
       templateUrl: 'partials/register.html',
       controller: 'RegisterController'
     });
@@ -42,15 +59,15 @@ app.run(['$rootScope', '$log', '$state', '$interval', '$location', 'SecurityServ
   if(token && profile) {
     // check if the user is manager or normal employee then reidirect to home
     if(profile.role === config.userRoles.MANAGER) {
-      $state.go('manager');
+      $location.path('/manager');
     } else if(profile.role === config.userRoles.INDIVIDUAL_USER) {
-      $state.go('user');
+      $location.path('/user');
     } else {
-      $state.go('login');
+      $location.path('/');
     }
   } else {
     // redirect to login
-    $state.go('login');
+    $location.path('/');
   }
 
   $rootScope.getHome = function() {
@@ -72,16 +89,21 @@ app.run(['$rootScope', '$log', '$state', '$interval', '$location', 'SecurityServ
     var path = $location.path();
     // check if the user is authorized
     if(util.isLoggedIn()) {
-        // check the user home page
-        if(path === '/manager') {
-            $location.path($rootScope.getHome());
-        } else if(path === '/employee') {
-            $location.path($rootScope.getHome());
-        } else if(path === '/') {
-            $location.path($rootScope.getHome());
-        }
+      // check the user home page
+      if(path === '/manager') {
+        $location.path($rootScope.getHome());
+      } else if(path === '/user') {
+        $location.path($rootScope.getHome());
+      } else if(path === '/') {
+        $location.path($rootScope.getHome());
+      }
     } else if(config.publicRoutes.indexOf(path) === -1) {
-        $location.path('/');
+      $location.path('/');
     }
   });
+
+  $rootScope.logout = function() {
+    storage.clear();
+    $location.path('/');
+  };
 }]);

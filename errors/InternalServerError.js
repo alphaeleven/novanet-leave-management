@@ -3,7 +3,7 @@
 /**
  * Internal Server error
  *
- * @author      spanhawk
+ * @author      riteshsangwan
  * @version     0.0.1
  */
 

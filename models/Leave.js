@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     status : {
       type: DataTypes.ENUM,
-      values: ['ACCEPTED', 'REJECTED', 'NEW']
+      values: ['APPROVED', 'REJECTED', 'NEW']
     },
     createdBy: {
       type: DataTypes.BIGINT,

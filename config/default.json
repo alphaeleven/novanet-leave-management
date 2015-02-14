@@ -7,8 +7,6 @@
       "POST /refreshToken": "UserController#refreshAccessToken",
       "GET /users/:id": "UserController#getProfile",
       "GET /users/:managerId/employees": "UserController#searchEmployees",
-      "GET /managers": "UserController#getAllManagers",
-      "GET /employees": "UserController#getAllEmployees",
       "GET /users/:id/leaves": "LeaveController#searchLeaves",
       "PUT /leaves/:id": "LeaveController#update",
       "POST /users/:userId/leaves": "LeaveController#create",
@@ -20,7 +18,9 @@
       "POST /resetForgottenPassword": "UserController#resetForgottenPassword",
       "POST /login": "UserController#login",
       "POST /register": "UserController#registerUser",
-      "POST /forgotPassword": "UserController#recoverPassword"
+      "POST /forgotPassword": "UserController#recoverPassword",
+      "GET /managers": "UserController#getAllManagers",
+      "GET /employees": "UserController#getAllEmployees"
     }
   },
   "controllers": {
@@ -45,6 +45,7 @@
   "JWT_SECRET": "pdlc_3YIOdhcOoUZ0s~G4wZTO+QY0Z6I",
   "DEFAULT_TOKEN_SIZE": 16,
   "ACTIONS_INDIVIDUAL_USER": "users,leaves,revokeToken,forgotPassword,refreshToken",
-  "ACTIONS_MANAGER": "users,leaves,revokeToken,forgotPassword,managers,employees,refreshToken",
-  "WEB_SERVER_PORT": 4040
+  "ACTIONS_MANAGER": "users,leaves,revokeToken,forgotPassword,refreshToken",
+  "WEB_SERVER_PORT": 4040,
+  "MAXIMUM_LEAVE_DURATION": 15
 }

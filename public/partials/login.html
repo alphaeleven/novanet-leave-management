@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        <div class="col col-md-12">
+            <h3 class="text-center">Novanet Leave Management Application</h3>
+            <p class="text-center">To use application login below</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-8 col-centered">
+            <p class="text-center text-danger" data-ng-if="status.error">{{status.message}}</p>
+            <form class="form-horizontal" role="form" name="loginForm" no-validate>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Email</label>
+                    <div class="col col-sm-7">
+                        <input class="form-control" type="email" placeholder="Email" data-ng-model="credentials.email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Password</label>
+                    <div class="col col-sm-7">
+                        <input class="form-control" type="password" placeholder="Password" data-ng-model="credentials.password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-7">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" data-ng-model="rememberMe"> Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-7">
+                        <button type="submit" class="btn btn-primary" data-ng-click="login(credentials)" data-ng-disabled="loginForm.$invalid">Login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-6 col-centered">
+            <p class="text-center">Not a member? <a href="#/register">Register</a></p>
+        </div>
+    </div>
+</div>

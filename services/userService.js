@@ -18,7 +18,7 @@ var securityService = require('./securityService'),
  * Create a user document in database
  *
  * @param  {Object}     user        user entity to create
- * @param  {Function}   callback    callback function<error, giftCardOffer>
+ * @param  {Function}     callback         callback function
  */
 exports.create = function(user, callback) {
   // use security service generateHash method to generate hash
@@ -41,7 +41,7 @@ exports.create = function(user, callback) {
  * Fetch a user by given user ID
  *
  * @param  {UUID}       id          id of the user to fetch
- * @param  {Function}   callback    callback function<error, giftCardOffer>
+ * @param  {Function}     callback         callback function
  */
 var _get = exports.get = function(id, callback) {
   User.find(id).success(function(user) {
@@ -55,7 +55,7 @@ var _get = exports.get = function(id, callback) {
  * Fetch a user by given email address
  *
  * @param  {String}     email       email address of user to fetch
- * @param  {Function}   callback    callback function<error, giftCardOffer>
+ * @param  {Function}     callback         callback function
  */
 exports.getByEmail = function(email, callback) {
   User.find({ where: {email: email} }).success(function(user) {
@@ -68,7 +68,7 @@ exports.getByEmail = function(email, callback) {
  *
  * @param  {int}       userId       id of the user to update
  * @param  {Object}     entity      user entity to persist
- * @param  {Function}   callback    callback function<error, giftCardOffer>
+ * @param  {Function}     callback         callback function
  */
 exports.update = function(userId, user, callback) {
   async.waterfall([
@@ -92,7 +92,7 @@ exports.update = function(userId, user, callback) {
  * Delete a user
  *
  * @param  {UUID}       id          id of the giftCardOffer to fetch
- * @param  {Function}   callback    callback function<error, giftCardOffer>
+ * @param  {Function}     callback         callback function
  */
 exports.delete = function(id, callback) {
   async.waterfall([
@@ -111,6 +111,11 @@ exports.delete = function(id, callback) {
   ], callback);
 };
 
+/**
+ * Find all users by filter criteria
+ * @param  {Object}     criteria    filter criteria
+ * @param  {Function}   callback    callback function
+ */
 exports.findByFilterCriteria = function(criteria, callback) {
   User.findAll({where: criteria}).success(function(users) {
     callback(null, users);

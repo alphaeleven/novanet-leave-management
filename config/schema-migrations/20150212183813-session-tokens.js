@@ -5,7 +5,7 @@ exports.up = function(db, callback) {
   async.series([
     // Test table
     db.runSql.bind(db,
-      'CREATE TABLE `novanet`.`session_tokens` ( ' +
+      'CREATE TABLE `session_tokens` ( ' +
         '`id` INT NOT NULL AUTO_INCREMENT, ' +
         '`token` MEDIUMTEXT NOT NULL, ' +
         '`expirationDate` TIMESTAMP NOT NULL, ' +

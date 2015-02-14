@@ -5,11 +5,11 @@ exports.up = function(db, callback) {
   async.series([
     // Test table
     db.runSql.bind(db,
-      'CREATE TABLE `novanet`.`leaves` ( ' +
+      'CREATE TABLE `leaves` ( ' +
         '`id` INT NOT NULL AUTO_INCREMENT, ' +
         '`reason` MEDIUMTEXT NOT NULL, ' +
-        '`startDate` TIMESTAMP NOT NULL, ' +
-        '`endDate` TIMESTAMP NOT NULL, ' +
+        '`startDate` DATETIME NOT NULL, ' +
+        '`endDate` DATETIME NOT NULL, ' +
         '`requester` INT NOT NULL, ' +
         '`resolver` INT NOT NULL, ' +
         '`status` ENUM(\'APPROVED\', \'REJECTED\', \'NEW\') NOT NULL, ' +

@@ -4,7 +4,7 @@
  * Validation error.
  * The Default HTTP STATUS CODE for ValidationError is 400 (HTTP BAD REQUEST)
  *
- * @author      spanhawk
+ * @author      riteshsangwan
  * @version     0.0.1
  */
 

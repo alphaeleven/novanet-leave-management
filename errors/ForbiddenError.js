@@ -3,8 +3,8 @@
 /**
  * Forbidden error
  *
- * @author      spanhawk
- * @version     1.0
+ * @author      riteshsangwan
+ * @version     0.0.1
  */
 
 var HTTP_FORBIDDEN = 403;

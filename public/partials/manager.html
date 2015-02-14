@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row vspacer40">
+        <div class="col col-md-12">
+            <button data-ng-click="logout()" class="btn btn-success pull-right">Logout</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            <h3 class="text-center">Welcome {{user.firstName}} {{user.lastName}}</h3>
+            <p class="text-center">Below is a list of all the leaves that you have requested and all the leave request for which you are the handler</p>
+            <p class="text-center">While approving the leave the system will auto check if the leave duration is not more than 15 days excluding weekends and public holidays. And if the duration is more than 15 days system will not allow to approve the leave.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12">
+            <p class="text-center" data-ng-class="{'text-danger': status.error, 'text-success': status.success}" data-ng-if="status.error || status.success">{{status.message}}</p>
+        </div>
+    </div>
+    <div class="row grid-header vspacer40">
+        <div class="col col-md-2">
+            <p>Start Date</p>
+        </div>
+        <div class="col col-md-2">
+            <p>End Date</p>
+        </div>
+        <div class="col col-md-4">
+            <p>Requested By</p>
+        </div>
+        <div class="col col-md-2">
+            <p>Approve</p>
+        </div>
+        <div class="col col-md-2">
+            <p>Reject</p>
+        </div>
+    </div>
+    <div class="row vspacer20" data-ng-repeat="leave in leaves.handler">
+        <div class="col col-md-2">
+            <p>{{leave.startDate | date: 'dd-MMMM-yyyy'}}</p>
+        </div>
+        <div class="col col-md-2">
+            <p>{{leave.endDate | date:'dd-MMMM-yyyy'}}</p>
+        </div>
+        <div class="col col-md-4">
+            <p>{{leave.requester.firstName}} {{leave.requester.lastName}}</p>
+        </div>
+        <!-- show the approve and rejected button only if the leave is not previously approved or rejected -->
+        <div data-ng-if="leave.status === 'NEW'" class="col col-md-2">
+            <button class="btn btn-primary" data-ng-click="approve(leave.id)">Approve</button>
+        </div>
+        <div data-ng-if="leave.status === 'NEW'" class="col col-md-2">
+            <button class="btn btn-danger" data-ng-click="reject(leave.id)">Reject</button>
+        </div>
+        <div class="col col-md-4" data-ng-if="leave.status !== 'NEW'">
+            <p>This leave request is {{leave.status}}</p>
+        </div>
+    </div>
+</div>

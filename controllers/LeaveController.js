@@ -21,7 +21,7 @@ var statuses = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
 };
-
+var logger = require('../logger').getLogger();
 var day = {
   SATURDAY: 6,
   SUNDAY: 7
@@ -31,12 +31,12 @@ var monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December' ];
 
 var nationalHolidays = {
-  2014: {
+  2015: {
     January: [
       26
     ],
     February: [
-      3, 5, 7, 8, 9, 21
+      3, 5, 7, 8, 9, 21, 23
     ],
     March: [
       4, 6, 8
@@ -154,11 +154,15 @@ exports.approve = function(req, res, next) {
       leaveService.get(leaveId, cb);
     },
     function(leave, cb) {
+      if(!leave) {
+        return cb(new NotFoundError('Leave not found'));
+      }
       var startDate = moment(leave.startDate);
       var endDate = moment(leave.endDate);
       var days = endDate.diff(startDate, 'days');
+      logger.info('Total No of Leave days ' + days);
       // compute no of days and it no of days is greater than 15 then don't approve the leave
-      for(var date = startDate; date.isBefore(endDate); date.add('days', 1)) {
+      for(var date = startDate; date.isBefore(endDate); date.add(1, 'days')) {
         // check if the date is not of weekend
         if(date.isoWeekday() === day.SATURDAY || date.isoWeekday() === day.SUNDAY) {
           // this is a weekend day exclude it
@@ -168,13 +172,15 @@ exports.approve = function(req, res, next) {
           var year = date.year();
           var month = monthNames[date.month()];
           var monthDate = date.date();
-          if(!nationalHolidays[year] || !nationalHolidays[year][month] || !nationalHolidays[year][month][monthDate]) {
+          var holidays = nationalHolidays[year][month];
+          if(nationalHolidays[year] && nationalHolidays[year][month] && holidays.indexOf(monthDate) !== -1) {
             // this date is a national holiday exclude it
             days = days - 1;
           }
         }
       }
-      if(days > 15) {
+      logger.info('Total No of Leave days (excluding weekends and national holidays) ' + days);
+      if(days > config.MAXIMUM_LEAVE_DURATION) {
         // don't allow holidays greater than 15 days
         cb(new ValidationError('Maximum leave duration is 15 days excluding national holidays and weekends'));
         if(error) {
@@ -186,12 +192,11 @@ exports.approve = function(req, res, next) {
       }
     },
     function(leave, cb){
-      if(leave) {
-        _.extend(leave, {status: statuses.APPROVED, reason: reason});
-        leaveService.update(leaveId, leave, cb);
-      } else {
-        cb(new NotFoundError('Leave not found'));
-      }
+      logger.info('Approving leave');
+      _.extend(leave, {status: statuses.APPROVED, reason: reason});
+      leave.save().success(function(updatedLeave) {
+        cb(null, updatedLeave);
+      }).error(cb);
     }
   ], function(err, leave) {
     if(err) {
